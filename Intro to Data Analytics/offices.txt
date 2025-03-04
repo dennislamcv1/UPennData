@@ -1,0 +1,9 @@
+o_id	o_address	o_opendate
+1 	'Philadelphia, PA'	'04/11/1994'
+2 	'Glenside, PA'	
+3	Moorestown	01/09/2004
+4	'Bristol, PA'	
+5	'Willow Grove, PA'	11/04/1994
+6	'Upper Darby'	'02/23/1982'
+7		'03/14/1991'
+8	'Media, PA'	05/24/1999
