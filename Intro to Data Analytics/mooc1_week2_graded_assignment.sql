@@ -10,7 +10,7 @@
 /* TODO 1
  * For all future steps you must first ATTACH the old database "practice_homework_mod2"
  * Hint: Use the ATTACH DATABASE statement with the location in your local directory files, and give it an alias of example*/
-ATTACH DATABASE 'C:\Users\Dennis\OneDrive\Intro to Data Analytics\practice_homework_mod2.db' AS example;
+
 
 
 /* TODO 2
@@ -21,10 +21,7 @@ ATTACH DATABASE 'C:\Users\Dennis\OneDrive\Intro to Data Analytics\practice_homew
  * How many columns does this new table have?
  */
 
-CREATE TABLE customer (
-cust_id int NOT NULL,
-cust_name varchar(127)
-);
+
 
 /* TODO 3
  * Copy all of the customer records from the original "customer" table in alias "example" database into your new "customer" table.
@@ -32,9 +29,6 @@ cust_name varchar(127)
  * How many records were copied? 
  */
  
-INSERT INTO customer (cust_id, cust_name)
-SELECT cust_id, cust_name
-FROM example.customer;
 
 
 
@@ -44,15 +38,6 @@ FROM example.customer;
  * Use the CREATE TABLE statement, without filling in data yet.
  * Show your SQLite code here.
  */
-CREATE TABLE purchase (
-pur_cust int,
-pur_prod int,
-pur_date date,
-pur_amount decimal(5, 2),
-pur_store_id int
-);
-
-SELECT * FROM purchase;
 
 
 
@@ -62,10 +47,6 @@ SELECT * FROM purchase;
  * How many records were copied? 
  */
 
-INSERT INTO purchase
-SELECT * FROM example.purchase;
-
-SELECT * FROM purchase;
 
 
 /* TODO 6
@@ -76,16 +57,6 @@ SELECT * FROM purchase;
  */
 
 
-CREATE TABLE product AS SELECT * FROM example.product;
-SELECT * FROM product;
-
-CREATE TABLE purchase_large AS SELECT * FROM example.purchase_large;
-SELECT * FROM purchase_large;
-
-
-
-
-
 
 /* TODO 7
  * Insert a new customer into your "customer" table.
@@ -93,10 +64,6 @@ SELECT * FROM purchase_large;
  * How many rows does the customer table have?
  */
 
-INSERT INTO customer (cust_id, cust_name)
-VALUES (16, 'Brandon Krakowsky');
-
-SELECT * FROM customer;
 
 
 /* TODO 8
@@ -108,14 +75,6 @@ SELECT * FROM customer;
  * How many rows does the purchase table have? How many columns?
  */ 
 
-INSERT INTO purchase
-VALUES (16,(SELECT p.prod_id FROM product p WHERE p.prod_name = 'Red Sweater'), DATE('now'), 28.95, NULL);
-
-SELECT * FROM purchase;
-
-
-
-
 
 
 /* TODO 9
@@ -125,12 +84,6 @@ SELECT * FROM purchase;
  * Show your SQLite code here.
  */
 
-CREATE TABLE store (
-store_id int NOT NULL,
-store_name varchar(20)
-);
-
-SELECT * FROM store;
 
 
 /* TODO 10
@@ -147,11 +100,6 @@ SELECT * FROM store;
  * How many rows were updated? 
  */
 
-UPDATE customer
-SET cust_name = 'Samantha V.'
-WHERE cust_id = 5;
-
-SELECT * FROM customer;
 
 
 /* TODO 12
@@ -161,11 +109,6 @@ SELECT * FROM customer;
  * How many records were updated? 
  */
 
-UPDATE purchase
-SET pur_amount = 83.39, pur_store_id = 20
-WHERE pur_date = '2014-07-28';
-
-SELECT * FROM purchase;
 
 
 
@@ -174,9 +117,6 @@ SELECT * FROM purchase;
  * Show your SQLite code to delete the purchases.
  * How many purchases were deleted? 
  */
-
-DELETE FROM purchase
-WHERE pur_store_id = 1;
 
 
 
@@ -188,19 +128,6 @@ WHERE pur_store_id = 1;
  * How many records were affected? 1 Purchase record, 1 Customer record
  */
 
-DELETE FROM purchase
-WHERE pur_cust IN (
-    SELECT cust_id
-    FROM customer
-    WHERE cust_name = 'Brandon Krakowsky'
-);
-
-DELETE FROM customer
-WHERE cust_name = 'Brandon Krakowsky';
-
-SELECT * FROM customer;
-
-SELECT * FROM purchase;
 
 
 /* TODO 15
@@ -209,10 +136,6 @@ SELECT * FROM purchase;
  * Show your code.
  */
 
-ALTER TABLE customer
-ADD COLUMN address varchar(100) DEFAULT NULL;
-
-SELECT * FROM customer;
 
 
 /* TODO 16
@@ -220,12 +143,6 @@ SELECT * FROM customer;
  * Show your code.
  */
 
-ALTER TABLE customer
-RENAME COLUMN address TO c_address;
-
-SELECT * FROM customer;
-
 
 
 /*Detach your database with alias example*/
-DETACH DATABASE example;

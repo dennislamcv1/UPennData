@@ -7,6 +7,7 @@
  * What is the query to show the customers with the name "Jane" or "Samantha" or "Brian"?  Do not use the OR operator.
  * Which customer names are in the result set?
  * Write a Query to answer the above question. 
+ * Tip: use IN keyword
  */
 
  
@@ -16,6 +17,7 @@
  * Show all customers, whether they made a purchase or not.  Do not use a LEFT JOIN.
  * How many rows were returned?  Which customer did not make a purchase?
  * Write a Query to answer the above question. 
+ */
  
 
 
