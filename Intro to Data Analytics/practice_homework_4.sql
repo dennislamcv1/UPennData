@@ -11,6 +11,11 @@
  * For all future steps you must first ATTACH the old database "practice_homework_mod2"
  * Hint: Use the ATTACH DATABASE statement with the location in your local directory files, and give it an alias of example*/
 
+ATTACH DATABASE './practice_homework_mod2.db' AS practice_homework_mod2;
+
+An example of how to do this is below based on where you put your .db file.
+
+ATTACH DATABASE 'C:\Users\Michael\Desktop\Module2\practice_homework_mod2.db' AS example;
 
 
 /* TODO 2
@@ -21,6 +26,18 @@
  * How many columns does this new table have?
  */
 
+CREATE TABLE practice_homework_empty.customer AS
+SELECT cust_id, cust_name 
+FROM practice_homework_mod2.customer
+WHERE 0;
+
+CREATE TABLE customer (
+cust_id int NOT NULL,
+cust_name varchar(127)
+);
+
+Then to check what you just created
+SELECT * FROM customer;
 
 
 /* TODO 3
@@ -29,7 +46,16 @@
  * How many records were copied? 
  */
  
+INSERT INTO practice_homework_empty.customer (cust_id, cust_name)
+SELECT cust_id, cust_name
+FROM practice_homework_mod2.customer;
 
+INSERT INTO customer
+SELECT * FROM example.customer;
+
+Then to check the table write:
+
+SELECT * FROM customer;
 
 
 /* TODO 4
@@ -39,6 +65,20 @@
  * Show your SQLite code here.
  */
 
+CREATE TABLE practice_homework_empty.purchase AS
+SELECT pur_cust, pur_prod, pur_date, pur_amount, pur_store_id 
+FROM practice_homework_mod2.purchase
+WHERE 0;
+
+CREATE TABLE purchase (
+pur_cust int,
+pur_prod int,
+pur_date date,
+pur_amount decimal(5, 2),
+pur_store_id int
+);
+
+SELECT * FROM purchase;
 
 
 /* TODO 5
@@ -46,6 +86,15 @@
  * Show the SQLite code you used to copy the purchase records.
  * How many records were copied? 
  */
+
+INSERT INTO practice_homework_empty.purchase (pur_cust, pur_prod, pur_date, pur_amount, pur_store_id)
+SELECT pur_cust, pur_prod, pur_date, pur_amount, pur_store_id
+FROM practice_homework_mod2.purchase;
+
+INSERT INTO purchase
+SELECT * FROM example.purchase;
+
+SELECT * FROM purchase;
 
 
 
@@ -56,6 +105,30 @@
  * How many rows were copied into each of the tables? 
  */
 
+-- Step 1: Attach the original database as 'source'
+ATTACH DATABASE 'practice_homework_mod2.db' AS source;
+
+-- Step 2: Create a copy of the 'product' table in the new (current) database
+CREATE TABLE product AS
+SELECT * FROM source.product;
+
+-- Step 3: Create a copy of the 'purchase_large' table in the new (current) database
+CREATE TABLE purchase_large AS
+SELECT * FROM source.purchase_large;
+
+-- Step 4: Detach the source database to keep things clean
+DETACH DATABASE source;
+
+-- Step 5: Verify your tables
+SELECT * FROM product LIMIT 10;
+SELECT * FROM purchase_large LIMIT 10;
+
+CREATE TABLE product AS SELECT * FROM example.product;
+SELECT * FROM product;
+
+CREATE TABLE purchase_large AS SELECT * FROM example.purchase_large;
+SELECT * FROM purchase_large;
+
 
 
 /* TODO 7
@@ -65,6 +138,10 @@
  * How many rows does the customer table have?
  */
 
+INSERT INTO customer (cust_id, cust_name)
+VALUES (16, 'Brandon Krakowsky');
+
+SELECT * FROM customer;
 
 
 /* TODO 8
@@ -76,6 +153,10 @@
  * How many rows does the purchase table have? How many columns?
  */ 
 
+INSERT INTO purchase
+VALUES (16,(SELECT p.prod_id FROM product p WHERE p.prod_name = 'Red Sweater'), DATE('now'), 28.95, NULL);
+
+SELECT * FROM purchase;
 
 
 /* TODO 9
@@ -85,6 +166,12 @@
  * Show your SQLite code here.
  */
 
+CREATE TABLE store (
+store_id int NOT NULL,
+store_name varchar(20)
+);
+
+SELECT * FROM store;
 
 
 /* TODO 10
@@ -92,6 +179,8 @@
  * Show your SQLite code. (No Quiz Question)
  */
  
+INSERT INTO store (store_id, store_name)
+VALUES (2, 'Downtown Central');
 
 
 /* TODO 11
@@ -100,6 +189,12 @@
  * What is the SQLite to do this?
  * How many rows were updated? 
  */
+
+UPDATE customer
+SET cust_name = 'Samantha V.'
+WHERE cust_id = 5;
+
+SELECT * FROM customer;
 
 
 
@@ -110,6 +205,11 @@
  * How many records were updated? 
  */
 
+UPDATE purchase
+SET pur_amount = 83.39, pur_store_id = 20
+WHERE pur_date = '2014-07-28';
+
+SELECT * FROM purchase;
 
 
 
@@ -119,6 +219,8 @@
  * How many purchases were deleted? 
  */
 
+DELETE FROM purchase
+WHERE pur_store_id = 1;
 
 
 /* TODO 14
@@ -129,6 +231,26 @@
  * How many records were affected? 
  */
 
+DELETE FROM purchase
+WHERE pur_cust IN (
+  SELECT cust_id FROM customer WHERE cust_name = 'Brandon Krakowsky'
+);
+
+
+DELETE FROM purchase
+WHERE pur_cust IN (
+    SELECT cust_id
+    FROM customer
+    WHERE cust_name = 'Brandon Krakowsky'
+);
+
+
+DELETE FROM customer
+WHERE cust_name = 'Brandon Krakowsky';
+
+SELECT * FROM customer;
+
+SELECT * FROM purchase;
 
 
 /* TODO 15
@@ -137,6 +259,10 @@
  * Show your code.
  */
 
+ALTER TABLE customer
+ADD COLUMN address varchar(100) DEFAULT NULL;
+
+SELECT * FROM customer;
 
 
 /* TODO 16
@@ -144,6 +270,10 @@
  * Show your code.
  */
 
+ALTER TABLE customer
+RENAME COLUMN address TO c_address;
+
+SELECT * FROM customer;
 
 
 /*Detach your database with alias example*/
